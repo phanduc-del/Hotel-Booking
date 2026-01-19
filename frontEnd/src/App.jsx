@@ -1,23 +1,35 @@
-import React from 'react';
-import { Toaster, toast } from 'sonner';  
-import { BrowserRouter, Routes, Route } from 'react-router';
-import Home from './pages/Home/HomePage.jsx';
-import NotFound from './pages/NotFound/NotFoundPage.jsx';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import MainLayout from "./layouts/MainLayout";
+
+import HomePage from "./pages/Home/HomePage";
+import LoginPage from "./pages/Auth/LoginPage";
+import RegisterPage from "./pages/Auth/RegisterPage";
+import NotFoundPage from "./pages/NotFound/NotFoundPage";
+
+import RoomListPage from "./pages/Room/RoomListPage";
+import RoomDetailPage from "./pages/Room/RoomDetailPage";
+import BookingPage from "./pages/Booking/BookingPage";
+
 const App = () => {
   return (
-    <div>
-      <BrowserRouter>
-        <Routes>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<MainLayout />}>
           
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
-          <Route path="*" element={<NotFound />} />
+          <Route path="/rooms" element={<RoomListPage />} />
+          <Route path="/rooms/:id" element={<RoomDetailPage />} />
+          <Route path="/booking/:id" element={<BookingPage />} />
 
-        </Routes>
-      </BrowserRouter>
-    </div>
-  )
-}
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
-export default App
-
+export default App;
