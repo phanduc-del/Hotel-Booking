@@ -1,43 +1,55 @@
 import { useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 
-const BookingPage = () => {
+export default function BookingPage() {
   const { id } = useParams();
-  const isLoggedIn = true; // giả lập
 
+  // Lấy thông tin đăng nhập từ localStorage (đúng thực tế hơn)
+  const token = localStorage.getItem("token");
+  const isLoggedIn = !!token;
+
+  // ❌ Chưa đăng nhập → đá về login
   if (!isLoggedIn) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace />;
   }
 
   const [type, setType] = useState("hour");
 
   const handlePayment = () => {
-    alert("Thanh toán thành công!");
+    alert(`Thanh toán thành công cho phòng #${id} (${type})`);
   };
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h1 className="text-xl font-bold">Đặt phòng #{id}</h1>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-md mx-auto bg-white rounded-xl shadow p-6 space-y-4">
+        <h1 className="text-2xl font-bold text-center">
+          Đặt phòng #{id}
+        </h1>
 
-      {/* Chọn kiểu đặt */}
-      <select
-        value={type}
-        onChange={e => setType(e.target.value)}
-        className="w-full border p-2 rounded my-4"
-      >
-        <option value="hour">Theo giờ</option>
-        <option value="day">Theo ngày</option>
-        <option value="night">Qua đêm</option>
-      </select>
+        {/* Chọn kiểu đặt phòng */}
+        <div>
+          <label className="block text-sm font-medium mb-1">
+            Kiểu đặt phòng
+          </label>
+          <select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="w-full border p-2 rounded"
+          >
+            <option value="hour">Theo giờ</option>
+            <option value="day">Theo ngày</option>
+            <option value="night">Qua đêm</option>
+          </select>
+        </div>
 
-      <button
-        onClick={handlePayment}
-        className="w-full bg-orange-500 text-white py-2 rounded"
-      >
-        Thanh toán
-      </button>
+        {/* Thanh toán */}
+        <button
+          onClick={handlePayment}
+          className="w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600"
+        >
+          Thanh toán
+        </button>
+      </div>
     </div>
   );
-};
-
-export default BookingPage;
+}

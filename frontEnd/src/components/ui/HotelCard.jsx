@@ -1,36 +1,48 @@
 import { Link } from "react-router-dom";
 
-const HotelCard = ({ hotel }) => {
+export default function HotelCard({ hotel }) {
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition">
+    <div className="bg-white rounded-xl shadow hover:shadow-lg transition">
+      
+      {/* Ảnh khách sạn */}
       <img
-        src={hotel.image}
+        src={
+          hotel.image_url ||
+          "https://via.placeholder.com/400x300?text=No+Image"
+        }
         alt={hotel.name}
-        className="h-48 w-full object-cover"
+        className="h-48 w-full object-cover rounded-t-xl"
       />
 
       <div className="p-4 space-y-2">
-        <h3 className="font-semibold text-lg">{hotel.name}</h3>
-        <p className="text-sm text-gray-500">{hotel.location}</p>
+        
+        {/* Tên khách sạn */}
+        <h3 className="font-semibold text-lg">
+          {hotel.name || "Tên khách sạn"}
+        </h3>
 
-        <div className="flex justify-between items-center pt-2">
-          <span className="text-orange-500 font-bold">
-            {hotel.price.toLocaleString()}đ / đêm
-          </span>
-          <span className="text-sm bg-green-100 text-green-700 px-2 py-1 rounded">
-            ⭐ {hotel.rating}
-          </span>
-        </div>
+        {/* Địa chỉ (nếu có) */}
+        {hotel.address && (
+          <p className="text-sm text-gray-500">
+            {hotel.address}
+          </p>
+        )}
 
+        {/* Giá từ */}
+        <p className="text-orange-500 font-bold">
+          {hotel.min_price
+            ? `Từ ${hotel.min_price.toLocaleString()}đ / đêm`
+            : "Xem giá phòng"}
+        </p>
+
+        {/* Nút xem phòng */}
         <Link
-          to={`/rooms/${hotel.id}`}
-          className="block w-full mt-3 bg-orange-500 text-white py-2 rounded text-center hover:bg-orange-600"
+          to={`/rooms/${hotel._id}`}
+          className="block mt-3 bg-orange-500 text-white py-2 rounded text-center hover:bg-orange-600"
         >
           Xem phòng
         </Link>
       </div>
     </div>
   );
-};
-
-export default HotelCard;
+}

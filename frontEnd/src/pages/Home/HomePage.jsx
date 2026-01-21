@@ -27,38 +27,41 @@
 // }
 
 // export default HomePage
-import { hotels } from "../../lib/hotels";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import HotelCard from "../../components/ui/HotelCard";
 
-const HomePage = () => {
+export default function HomePage() {
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const res = await axios.get("http://localhost:5001/api/rooms");
+        setRooms(res.data);
+      } catch (err) {
+        console.error("Lỗi lấy phòng", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRooms();
+  }, []);
+
+  if (loading) return <div className="p-6">Đang tải phòng...</div>;
+
   return (
-    <div className="bg-gray-50 min-h-screen">
-      {/* Hero search */}
-      <section className="bg-gradient-to-r from-orange-500 to-pink-500 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 text-center space-y-4">
-          <h1 className="text-4xl font-bold">
-            Đặt phòng khách sạn nhanh chóng
-          </h1>
-          <p className="opacity-90">
-            Giá tốt mỗi giờ – mỗi đêm, xác nhận ngay
-          </p>
-        </div>
-      </section>
+    <div className="max-w-7xl mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-6">Khách sạn nổi bật</h2>
 
-      {/* Hotel list */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-bold mb-6">
-          Khách sạn nổi bật
-        </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {hotels.map(hotel => (
-            <HotelCard key={hotel.id} hotel={hotel} />
-          ))}
-        </div>
-      </section>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {rooms.map(room => (
+          <HotelCard key={room._id} hotel={room} />
+        ))}
+      </div>
     </div>
   );
-};
+}
 
-export default HomePage;

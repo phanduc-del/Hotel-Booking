@@ -1,18 +1,31 @@
-import express from 'express';
-import { 
-    createUser, 
-    getAllUsers, 
-    getUserById, 
-    updateUser, 
-    deleteUser 
-} from '../controllers/userController.js';
+import express from "express";
+import { protect } from "../middleware/authMiddleware.js";
+
+import {
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+  getProfile,
+  updateProfile,
+} from "../controllers/userController.js";
 
 const router = express.Router();
 
-router.post('/', createUser);           // POST http://localhost:5000/api/users
-router.get('/', getAllUsers);           // GET http://localhost:5000/api/users
-router.get('/:id', getUserById);        // GET http://localhost:5000/api/users/:id
-router.put('/:id', updateUser);         // PUT http://localhost:5000/api/users/:id
-router.delete('/:id', deleteUser);      // DELETE http://localhost:5000/api/users/:id
+/**
+ * 🔐 PROFILE (bắt buộc đăng nhập)
+ */
+router.get("/profile", protect, getProfile);
+router.put("/profile", protect, updateProfile);
+
+/**
+ * 👤 CRUD USERS
+ */
+router.post("/", createUser);
+router.get("/", getAllUsers);
+router.get("/:id", getUserById);
+router.put("/:id", updateUser);
+router.delete("/:id", deleteUser);
 
 export default router;
