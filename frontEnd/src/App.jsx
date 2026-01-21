@@ -6,6 +6,9 @@ import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
+import RoomListPage from "./pages/Room/RoomListPage";
+import RoomDetailPage from "./pages/Room/RoomDetailPage";
+
 
 
 
@@ -22,6 +25,8 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/rooms" element={<RoomListPage />} />
+          <Route path="/rooms/:id" element={<RoomDetailPage />} />
 
           
             <Route path="/profile" element={<ProfilePage />} />
